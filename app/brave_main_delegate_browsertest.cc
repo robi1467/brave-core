@@ -64,10 +64,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &autofill::features::kAutofillEnableAccountWalletStorage,
       &autofill::features::kAutofillServerCommunication,
-      &blink::features::kNativeFileSystemAPI,
       &blink::features::kTextFragmentAnchor,
       &features::kAllowPopupsDuringPageUnload,
-      // [Available in Cr87] &features::kDirectSockets,
+      &features::kDirectSockets,
       &features::kLangClientHintHeader,
       &features::kNotificationTriggers,
       &features::kPrivacySettingsRedesign,

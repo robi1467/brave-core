@@ -578,11 +578,6 @@ static_library("browser_tests_runner") {
 }
 
 if (!is_android) {
-group("other_browser_tests") {
-  testonly = true
-  deps = [ "//brave/browser:browser_tests" ]
-}
-
   test("brave_browser_tests") {
     testonly = true
 
@@ -694,6 +689,7 @@ group("other_browser_tests") {
       "//brave/browser/tor:browser_tests",
       "//brave/components/ipfs/test:brave_ipfs_browser_tests",
       "//brave/browser/ui/tabs/test:browser_tests",
+      "//brave/third_party/blink/test:browser_tests",
       "//media:test_support",
     ]
 
@@ -863,7 +859,6 @@ group("other_browser_tests") {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
     deps += [
       ":brave_browser_tests_deps",
-      ":other_browser_tests",
       "//brave/app:brave_generated_resources_grit",
       "//brave/app:command_ids",
       "//brave/app/theme:brave_theme_resources_grit",

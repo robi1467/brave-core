@@ -458,20 +458,3 @@ source_set("browser") {
     deps += [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
   }
 }
-
-source_set("browser_tests") {
-  testonly = true
-
-  sources = [ "disabled_blink_apis_browsertest.cc" ]
-
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-  deps = [
-    "//base/test:test_support",
-    "//brave/common",
-    "//chrome/browser/ui",
-    "//chrome/test:test_support_ui",
-    "//net:test_support",
-    "//ui/shell_dialogs",
-  ]
-}
