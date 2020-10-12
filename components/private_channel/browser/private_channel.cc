@@ -89,11 +89,11 @@ void PrivateChannel::OnPrivateChannelMetaLoadComplete(
 
   if (http_loader_->NetError() != net::OK || response_code < 200 ||
       response_code > 299) {
-    LOG(ERROR) << "Failed to fetch metadata from private channel server"
-               << ", error: " << http_loader_->NetError()
-               << ", response code: " << response_code
-               << ", payload: " << safe_response_body
-               << ", url: " << http_loader_->GetFinalURL().spec();
+    VLOG(0) << "Failed to fetch metadata from private channel server"
+            << ", error: " << http_loader_->NetError()
+            << ", response code: " << response_code
+            << ", payload: " << safe_response_body
+            << ", url: " << http_loader_->GetFinalURL().spec();
     return;
   }
   // We expect the public key response from the server to be correct,
@@ -117,17 +117,17 @@ void PrivateChannel::FirstRoundProtocol(std::string server_pk) {
       ChallengeFirstRound(input, input_size, &server_pk[0]);
 
   if (request_artefacts.error) {
-    LOG(ERROR) << "FirstRoundProtocol error. Stopping protocol.";
+    VLOG(0) << "FirstRoundProtocol error. Stopping protocol.";
     return;
   }
 
   const std::string payload = base::StringPrintf(
-      "pk_vector=%s&th_key_vector=%s&enc_signals=%s&client_id=%s&checks_"
+      "pk_vector=%s&th_key_vector=%s&enc_signals=%s&client_id=%s&"
       "version=%s",
       request_artefacts.client_pks.c_str(),
       request_artefacts.shared_pubkey.c_str(),
       request_artefacts.encrypted_hashes.c_str(), referral_code_.c_str(),
-      PRIVATE_CHANNEL_VERSION);
+      kPrivateChannelVersion);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->method = "POST";
@@ -190,12 +190,11 @@ void PrivateChannel::OnPrivateChannelFirstRoundLoadComplete(
 
   if (http_loader_->NetError() != net::OK || response_code < 200 ||
       response_code > 299) {
-    LOG(ERROR)
-        << "Failed to run the first round of the private channels protocol"
-        << ", error: " << http_loader_->NetError()
-        << ", response code: " << response_code
-        << ", payload: " << safe_response_body
-        << ", url: " << http_loader_->GetFinalURL().spec();
+    VLOG(0) << "Failed to run the first round of the private channels protocol"
+            << ", error: " << http_loader_->NetError()
+            << ", response code: " << response_code
+            << ", payload: " << safe_response_body
+            << ", url: " << http_loader_->GetFinalURL().spec();
     return;
   }
 
@@ -220,7 +219,7 @@ void PrivateChannel::SecondRoundProtocol(const std::string& encrypted_input,
       id.c_str());
 
   if (request_artefacts.error) {
-    LOG(ERROR) << "SecondRoundProtocol error. Stopping protocol.";
+    VLOG(0) << "SecondRoundProtocol error. Stopping protocol.";
     return;
   }
 
@@ -280,15 +279,17 @@ void PrivateChannel::OnPrivateChannelSecondRoundLoadComplete(
       response_body ? *response_body : std::string();
 
   if (response_code < 200 || response_code > 299) {
-    LOG(ERROR)
-        << "Failed to run the second round of the private channels protocol"
-        << ", error: " << http_loader_->NetError()
-        << ", response code: " << response_code
-        << ", payload: " << safe_response_body
-        << ", url: " << http_loader_->GetFinalURL().spec();
+    VLOG(0) << "Failed to run the second round of the private channels protocol"
+            << ", error: " << http_loader_->NetError()
+            << ", response code: " << response_code
+            << ", payload: " << safe_response_body
+            << ", url: " << http_loader_->GetFinalURL().spec();
+
+    http_loader_.reset();
     return;
   }
 
+  http_loader_.reset();
   VLOG(1) << "PrivateChannel: Protocol successful";
 }
 
