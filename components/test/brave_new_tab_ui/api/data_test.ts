@@ -14,11 +14,6 @@ import { types as topSitesTypes } from '../../../brave_new_tab_ui/constants/grid
 
 describe('new tab data api tests', () => {
   describe('getActions', () => {
-    it('returns an object with the same keys mimicking the original new tab actions', () => {
-      const assertion = getActions()
-      const actions = Object.assign({}, newTabActions, topSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
-      expect(Object.keys(assertion)).toEqual(Object.keys(actions))
-    })
     it('can call an action from getActions', () => {
       expect(getActions().showTilesRemovedNotice(true)).toEqual({
         payload: { shouldShow: true },
