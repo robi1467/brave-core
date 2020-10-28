@@ -5,12 +5,12 @@
 import * as React from 'react'
 
 import { HostContext } from '../lib/host_context'
-import { injectThemeVariables } from '../lib/theme_loader'
+import { injectThemeVariables } from '../../shared/lib/theme_loader'
 
 import { AppError } from './app_error'
 import { PublisherBanner } from './publisher_banner'
 import { TipForm } from './tip_form'
-import { CloseIcon } from './icons/close_icon'
+import { CloseIcon } from '../../shared/components/icons/close_icon'
 
 import * as style from './app.style'
 
