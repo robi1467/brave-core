@@ -1488,6 +1488,15 @@ void AdsImpl::GetTransactionHistory(
   callback(/* success */ true, statement);
 }
 
+void AdsImpl::GetInternalsInfo(
+    ads::InternalsInfoCallback callback) {
+  auto info = InternalsInfo::New();
+
+  // Retrieve the payment id.
+  info->locale = "en-us";
+  callback(std::move(info));
+}
+
 TransactionList AdsImpl::GetTransactions(
     const uint64_t from_timestamp_in_seconds,
     const uint64_t to_timestamp_in_seconds) {

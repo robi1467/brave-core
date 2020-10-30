@@ -220,6 +220,9 @@ class AdsImpl
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) override;
 
+  void GetInternalsInfo(
+      ads::InternalsInfoCallback callback) override;
+
   AdContent::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,

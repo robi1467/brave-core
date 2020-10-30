@@ -94,7 +94,7 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::MaybeExtractIntentSignal(
     return purchase_intent_signal;
   }
 
-  BLOG(1, "Extracting purchase intent signal from visited URL");
+  BLOG(1, "Extracting purchase intent signal from visited URL: " << url);
 
   purchase_intent_signal = ExtractIntentSignal(url);
   if (purchase_intent_signal.segments.empty()) {
@@ -102,6 +102,7 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::MaybeExtractIntentSignal(
     return purchase_intent_signal;
   }
 
+  LOG(INFO) << "*** Extracted purchase intent signal from visited URL: " << url;
   BLOG(1, "Extracted purchase intent signal from visited URL");
 
   AppendIntentSignalToHistory(purchase_intent_signal);
@@ -236,6 +237,7 @@ bool PurchaseIntentClassifier::FromJson(
       info.segments.push_back(segments.at(segment_ix.GetInt()));
     }
 
+
     segment_keywords_.push_back(info);
   }
 
@@ -353,6 +355,7 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
   PurchaseIntentSignalInfo signal_info;
   const std::string search_query =
       SearchProviders::ExtractSearchQueryKeywords(url);
+  LOG(INFO) << "*** search_query: " << search_query;
 
   if (!search_query.empty()) {
     auto keyword_segments = GetSegments(search_query);
@@ -444,8 +447,15 @@ PurchaseIntentSegmentList PurchaseIntentClassifier::GetSegments(
   PurchaseIntentSegmentList segment_list;
   auto search_query_keyword_set = TransformIntoSetOfWords(search_query);
 
+  for (const auto& sqk : search_query_keyword_set) {
+    LOG(INFO) << " AAAA: " << sqk;
+  }
+
   for (const auto& keyword : segment_keywords_) {
     auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
+    for (const auto& ltk : keyword.keywords) {
+      LOG(INFO) << " BBB: " << ltk;
+    }
 
     // Intended behaviour relies on early return from list traversal and
     // implicitely on the ordering of |segment_keywords_| to ensure
@@ -499,6 +509,7 @@ std::vector<std::string> PurchaseIntentClassifier::TransformIntoSetOfWords(
   std::string lowercase_text = StripHtmlTagsAndNonAlphaNumericCharacters(text);
   std::transform(lowercase_text.begin(), lowercase_text.end(),
   lowercase_text.begin(), ::tolower);
+  LOG(INFO) << "CCC lowered text: " << text;
 
   std::stringstream sstream(lowercase_text);
   std::vector<std::string> set_of_words;
