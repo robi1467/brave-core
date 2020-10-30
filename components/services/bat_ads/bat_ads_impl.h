@@ -100,7 +100,7 @@ class BatAdsImpl :
       GetAdsHistoryCallback callback) override;
 
   void GetInternalsInfo(
-      brave_ads::GetInternalsInfoCallback callback) override;
+      GetInternalsInfoCallback callback) override;
 
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
