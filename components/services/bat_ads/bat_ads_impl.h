@@ -99,6 +99,11 @@ class BatAdsImpl :
       const uint64_t to_timestamp,
       GetAdsHistoryCallback callback) override;
 
+  /*
+  void GetInternalsInfo(
+      GetInternalsInfoCallback callback) override;
+      */
+
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
 

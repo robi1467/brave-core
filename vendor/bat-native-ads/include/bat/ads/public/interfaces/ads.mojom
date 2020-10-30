@@ -10,6 +10,10 @@ enum BraveAdsEnvironment {
   DEVELOPMENT
 };
 
+struct BraveAdsInternalsInfo {
+  string locale;
+};
+
 struct BraveAdsBuildChannel {
   bool is_release;
   string name;

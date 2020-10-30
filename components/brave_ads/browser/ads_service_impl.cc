@@ -408,6 +408,24 @@ void AdsServiceImpl::GetAdsHistory(
           std::move(callback)));
 }
 
+void AdsServiceImpl::GetInternalsInfo(
+    GetInternalsInfoCallback callback) {
+  if (!connected()) {
+    return;
+  }
+  auto info = ads::InternalsInfo::New();
+  info->locale = "en-us";
+
+  callback.Run(info);
+//  std::move(callback).Run(info);
+
+  /*
+  bat_ads_->GetInternalsInfo(
+      base::BindOnce(&AdsServiceImpl::OnGetInternalsInfo,
+          AsWeakPtr(), std::move(callback)));
+          */
+}
+
 void AdsServiceImpl::GetTransactionHistory(
     GetTransactionHistoryCallback callback) {
   if (!connected()) {
@@ -1201,6 +1219,12 @@ void AdsServiceImpl::OnGetAdsHistory(
   }
 
   std::move(callback).Run(list);
+}
+
+void AdsServiceImpl::OnGetInternalsInfo(
+    GetInternalsInfoCallback callback,
+    ads::InternalsInfoPtr info) {
+  std::move(callback).Run(std::move(info));
 }
 
 void AdsServiceImpl::OnGetTransactionHistory(

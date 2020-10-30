@@ -171,6 +171,12 @@ void BatAdsImpl::GetAdsHistory(
   std::move(callback).Run(history.ToJson());
 }
 
+/*
+void BatAdsImpl::GetInternalsInfo(
+    GetInternalsInfoCallback callback) {
+}
+*/
+
 void BatAdsImpl::GetTransactionHistory(
     GetTransactionHistoryCallback callback) {
   auto* holder = new CallbackHolder<GetTransactionHistoryCallback>(

@@ -13,6 +13,9 @@ namespace ads {
 
 using Environment = mojom::BraveAdsEnvironment;
 
+using InternalsInfo = mojom::BraveAdsInternalsInfo;
+using InternalsInfoPtr = mojom::BraveAdsInternalsInfoPtr;
+
 using BuildChannel = mojom::BraveAdsBuildChannel;
 using BuildChannelPtr = mojom::BraveAdsBuildChannelPtr;
 
