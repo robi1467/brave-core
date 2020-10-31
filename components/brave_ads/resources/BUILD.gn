@@ -1,12 +1,52 @@
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
+pack_web_resources("internals_generated_resources") {
+  resource_name = "brave_ads_internals"
+  output_dir = "$root_gen_dir/brave/components/brave_ads/resources"
+  # need webpack and GRD generation first
+  deps = [
+    "internals"
+  ]
+}
+
+grit("static_resources") {
+  source = "brave_ads_static_resources.grd"
+
+  outputs = [
+    "grit/brave_ads_resources.h",
+    "brave_ads_static.pak",
+  ]
+
+  deps = [
+  ]
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+
+  output_dir = "$root_gen_dir/brave/components/brave_ads/resources"
+}
+
 repack("resources") {
-  output = "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak"
+  public_deps = [
+    ":internals_generated_resources",
+  ]
+
   sources = [
+    "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_internals_generated.pak",
     "$root_gen_dir/bat/ads/resources/bat_ads_resources.pak",
   ]
 
   deps = [
     "//brave/vendor/bat-native-ads/data/resources",
   ]
+
+  output = "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak"
 }

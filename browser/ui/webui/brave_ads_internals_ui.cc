@@ -12,10 +12,18 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+// #include "brave/components/brave_ads/resources/grit/brave_ads_internals_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "bat/ads/mojom.h"
+
+#if defined(BRAVE_CHROMIUM_BUILD)
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#else
+#include "components/grit/components_resources.h"
+#include "components/grit/components_scaled_resources.h"
+#endif
 
 namespace {
 
@@ -80,6 +88,8 @@ void AdsInternalsDOMHandler::OnGetAdsInternalsInfo(
   }
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_ads_internals.onGetAdsInternalsInfo", info_dict);
+}
+
 }
 
 BraveAdsInternalsUI::BraveAdsInternalsUI(content::WebUI* web_ui,
