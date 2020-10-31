@@ -342,8 +342,6 @@ source_set("ui") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "webui/brave_ads_internals_ui.cc",
-      "webui/brave_ads_internals_ui.h",
       "webui/brave_rewards_internals_ui.cc",
       "webui/brave_rewards_internals_ui.h",
       "webui/brave_rewards_source.cc",
@@ -362,7 +360,6 @@ source_set("ui") {
     deps += [
       "//brave/components/brave_rewards/resources:page_generated_resources",
       "//brave/components/brave_rewards/resources:internals_generated_resources",
-      "//brave/components/brave_ads/resources:internals_generated_resources",
       "//brave/components/brave_rewards/resources:tip_generated_resources",
       "//brave/vendor/bat-native-ads:headers",
       "//brave/vendor/bat-native-ledger:headers",

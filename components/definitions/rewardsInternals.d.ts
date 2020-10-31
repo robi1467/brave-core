@@ -10,6 +10,9 @@ declare namespace RewardsInternals {
       walletPaymentId: string
       bootStamp: number
     }
+    adsInfo: {
+      locale: string
+    }
     contributions: ContributionInfo[]
     promotions: Promotion[]
     log: string

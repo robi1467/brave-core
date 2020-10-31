@@ -12,6 +12,9 @@ const defaultState: RewardsInternals.State = {
     walletPaymentId: '',
     bootStamp: 0
   },
+  adsInfo: {
+    locale: ''
+  },
   contributions: [],
   promotions: [],
   log: '',
