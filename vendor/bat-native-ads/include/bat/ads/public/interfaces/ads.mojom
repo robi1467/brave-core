@@ -10,7 +10,7 @@ enum BraveAdsEnvironment {
   DEVELOPMENT
 };
 
-struct InternalsInfo {
+struct BraveAdsInternalsInfo {
   string locale;
 };
 

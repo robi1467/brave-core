@@ -413,17 +413,17 @@ void AdsServiceImpl::GetInternalsInfo(
   if (!connected()) {
     return;
   }
+  /*
   auto info = ads::InternalsInfo::New();
   info->locale = "en-us";
 
   callback.Run(info);
+  */
 //  std::move(callback).Run(info);
 
-  /*
   bat_ads_->GetInternalsInfo(
       base::BindOnce(&AdsServiceImpl::OnGetInternalsInfo,
           AsWeakPtr(), std::move(callback)));
-          */
 }
 
 void AdsServiceImpl::GetTransactionHistory(
