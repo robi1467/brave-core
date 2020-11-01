@@ -32,7 +32,6 @@
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
-#include "brave/browser/ui/webui/brave_ads_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #endif
 
@@ -81,8 +80,6 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
-  } else if (host == kAdsInternalsHost) {
-    return new BraveAdsInternalsUI(web_ui, url.host());
 #if !defined(OS_ANDROID)
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
