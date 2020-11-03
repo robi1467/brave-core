@@ -236,6 +236,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     network_time::kNetworkTimeServiceQuerying.name,
     password_manager::features::kPasswordCheck.name,
     safe_browsing::kEnhancedProtection.name,
+    features::kIdleDetection.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
     translate::kTranslate.name,
