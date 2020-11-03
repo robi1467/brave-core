@@ -27,7 +27,11 @@ export class GeneralAdsInfo extends React.Component<Props, {}> {
             onClick={this.props.onGet}
           />
         </ButtonWrapper>
+        <div>
+          {this.props.data.adsInfo.locale}
+        </div>
       </>
     )
   }
 }
+

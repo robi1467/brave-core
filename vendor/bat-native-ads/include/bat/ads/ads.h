@@ -189,6 +189,7 @@ class ADS_EXPORT Ads {
       const uint64_t to_timestamp) = 0;
 
   virtual void GetInternalsInfo(
+      const std::string& locale,
       InternalsInfoCallback callback) = 0;
 
   // Should be called to get transaction history. The callback takes one

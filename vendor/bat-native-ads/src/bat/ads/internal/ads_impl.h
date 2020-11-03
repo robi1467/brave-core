@@ -221,6 +221,7 @@ class AdsImpl
       const uint64_t to_timestamp) override;
 
   void GetInternalsInfo(
+      const std::string& locale,
       ads::InternalsInfoCallback callback) override;
 
   AdContent::LikeAction ToggleAdThumbUp(

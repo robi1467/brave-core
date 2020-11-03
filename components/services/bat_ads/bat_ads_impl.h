@@ -100,6 +100,7 @@ class BatAdsImpl :
       GetAdsHistoryCallback callback) override;
 
   void GetInternalsInfo(
+      const std::string& locale,
       GetInternalsInfoCallback callback) override;
 
   void GetTransactionHistory(

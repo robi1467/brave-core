@@ -94,7 +94,7 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::MaybeExtractIntentSignal(
     return purchase_intent_signal;
   }
 
-  BLOG(1, "Extracting purchase intent signal from visited URL: " << url);
+  BLOG(1, "Extracting purchase intent signal from visited URL");
 
   purchase_intent_signal = ExtractIntentSignal(url);
   if (purchase_intent_signal.segments.empty()) {
@@ -212,18 +212,18 @@ bool PurchaseIntentClassifier::FromJson(
   base::Value* incoming_segment_keywords =
       root->FindDictPath("segment_keywords");
   if (!incoming_segment_keywords) {
-    BLOG(1, "Failed to load from JSON, segment keywords missing");
+    LOG(INFO) << "Failed to load from JSON, segment keywords missing";
     return false;
   }
 
   if (!incoming_segment_keywords->is_dict()) {
-    BLOG(1, "Failed to load from JSON, segment keywords not of type dict");
+    LOG(INFO) << "Failed to load from JSON, segment keywords not of type dict";
     return false;
   }
 
   base::DictionaryValue* dict2;
   if (!incoming_segment_keywords->GetAsDictionary(&dict2)) {
-    BLOG(1, "Failed to load from JSON, get segment keywords as dict");
+    LOG(INFO) << "Failed to load from JSON, get segment keywords as dict";
     return false;
   }
 
@@ -236,7 +236,6 @@ bool PurchaseIntentClassifier::FromJson(
       info.segments.push_back(segments.at(segment_ix.GetInt()));
     }
 
-
     segment_keywords_.push_back(info);
   }
 
@@ -244,18 +243,18 @@ bool PurchaseIntentClassifier::FromJson(
   base::Value* incoming_funnel_keywords =
       root->FindDictPath("funnel_keywords");
   if (!incoming_funnel_keywords) {
-    BLOG(1, "Failed to load from JSON, funnel keywords missing");
+    LOG(INFO) << "Failed to load from JSON, funnel keywords missing";
     return false;
   }
 
   if (!incoming_funnel_keywords->is_dict()) {
-    BLOG(1, "Failed to load from JSON, funnel keywords not of type dict");
+    LOG(INFO) << "Failed to load from JSON, funnel keywords not of type dict";
     return false;
   }
 
   base::DictionaryValue* dict;
   if (!incoming_funnel_keywords->GetAsDictionary(&dict)) {
-    BLOG(1, "Failed to load from JSON, get funnel keywords as dict");
+    LOG(INFO) << "Failed to load from JSON, get funnel keywords as dict";
     return false;
   }
 
@@ -332,6 +331,7 @@ void PurchaseIntentClassifier::OnLoadUserModelForId(
     const std::string& id,
     const Result result,
     const std::string& json) {
+  LOG(INFO) << "*** onloadusermodelforid: " << json;
   if (result != SUCCESS) {
     BLOG(1, "Failed to load " << id << " purchase intent user model");
     is_initialized_ = false;
@@ -357,6 +357,9 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
 
   if (!search_query.empty()) {
     auto keyword_segments = GetSegments(search_query);
+    for (auto kw : keyword_segments) {
+      LOG(INFO) << "*** kw: " << kw;
+    }
 
     if (!keyword_segments.empty()) {
       uint16_t keyword_weight = GetFunnelWeight(search_query);

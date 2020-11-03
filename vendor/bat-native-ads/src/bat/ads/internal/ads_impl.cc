@@ -1489,11 +1489,10 @@ void AdsImpl::GetTransactionHistory(
 }
 
 void AdsImpl::GetInternalsInfo(
+    const std::string& locale,
     ads::InternalsInfoCallback callback) {
   auto info = InternalsInfo::New();
-
-  // Retrieve the payment id.
-  info->locale = "en-us";
+  info->locale = locale;
   callback(std::move(info));
 }
 

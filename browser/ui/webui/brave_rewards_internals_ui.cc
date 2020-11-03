@@ -156,11 +156,9 @@ void RewardsInternalsDOMHandler::OnGetAdsInternalsInfo(
   }
 
   base::DictionaryValue info_dict;
-  if (info) {
-    info_dict.SetString("locale", "en-js");
-  }
+  info_dict.SetString("locale", info->locale);
   web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_ads_internals.onGetAdsInternalsInfo", info_dict);
+      "brave_rewards_internals.onGetAdsInternalsInfo", info_dict);
 }
 
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(

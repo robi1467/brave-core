@@ -181,10 +181,11 @@ void BatAdsImpl::OnGetInternalsInfo(
 }
 
 void BatAdsImpl::GetInternalsInfo(
+    const std::string& locale,
     GetInternalsInfoCallback callback) {
   auto* holder = new CallbackHolder<GetInternalsInfoCallback>(
       AsWeakPtr(), std::move(callback));
-  ads_->GetInternalsInfo(
+  ads_->GetInternalsInfo(locale,
     std::bind(BatAdsImpl::OnGetInternalsInfo, holder, _1));
 }
 
