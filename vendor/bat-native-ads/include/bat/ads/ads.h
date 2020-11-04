@@ -189,11 +189,11 @@ class ADS_EXPORT Ads {
       const uint64_t to_timestamp) = 0;
 
   virtual void GetInternalsInfo(
-      const std::string& locale,
+      InternalsInfoPtr info,
       InternalsInfoCallback callback) = 0;
 
   // Should be called to get transaction history. The callback takes one
-  // argument — |StatementInfo| which contains a list of |TransactionInfo|
+  // argument — |StatementInfo| which contains a lis./components/services/bat_ads/bat_ads_impl.ht of |TransactionInfo|
   // transactions and associated earned ad rewards
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;

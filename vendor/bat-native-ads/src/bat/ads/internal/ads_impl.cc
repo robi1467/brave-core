@@ -1489,10 +1489,9 @@ void AdsImpl::GetTransactionHistory(
 }
 
 void AdsImpl::GetInternalsInfo(
-    const std::string& locale,
+    InternalsInfoPtr info,
     ads::InternalsInfoCallback callback) {
-  auto info = InternalsInfo::New();
-  info->locale = locale;
+  InternalsInfo info_ = *info;
   info->enabled = IsInitialized();
   callback(std::move(info));
 }

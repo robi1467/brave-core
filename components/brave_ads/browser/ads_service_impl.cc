@@ -414,8 +414,11 @@ void AdsServiceImpl::GetInternalsInfo(
     return;
   }
 
+  ads::InternalsInfoPtr info = ads::InternalsInfo::New();
+  info->locale = GetLocale();
+
   bat_ads_->GetInternalsInfo(
-      GetLocale(),
+      std::move(info),
       base::BindOnce(&AdsServiceImpl::OnGetInternalsInfo,
           AsWeakPtr(), std::move(callback)));
 }
