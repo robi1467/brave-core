@@ -30,6 +30,11 @@ source_set("android_browser_process") {
     "//mojo/public/cpp/bindings",
   ]
 
+  if (is_android) { deps += ["//brave/content/browser/mojom",]
+    sources += ["//brave/content/browser/cosmetic_filters_communication_impl.cc",
+    "//brave/content/browser/cosmetic_filters_communication_impl.h",
+    "//brave/content/browser/cosmetic_filters_observer.h",]}
+
   if (brave_ads_enabled) {
     sources += [
       "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",

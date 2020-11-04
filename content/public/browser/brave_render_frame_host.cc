@@ -5,6 +5,8 @@
 
 #include "content/public/browser/render_frame_host.h"
 
+#include "brave/content/browser/cosmetic_filters_communication_impl.h"
+
 namespace content {
 
 RenderFrameHost::RenderFrameHost() {}

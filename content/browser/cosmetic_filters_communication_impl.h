@@ -13,9 +13,7 @@
 #include "base/values.h"
 #include "brave/content/browser/mojom/cosmetic_filters_communication.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-//#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-//#include "mojo/public/cpp/bindings/remote.h"
 
 namespace content {
 class RenderFrameHost;
@@ -24,7 +22,7 @@ class CosmeticFiltersObserver;
 class CosmeticFiltersCommunicationImpl final
 	: public cf_comm::mojom::CosmeticFiltersCommunication {
  public:
-  static void GetInstance(content::RenderFrameHost* render_frame_host,
+  static void CreateInstance(content::RenderFrameHost* render_frame_host,
       CosmeticFiltersObserver* cosmetic_filters_observer);
 
   CosmeticFiltersCommunicationImpl(
@@ -35,13 +33,9 @@ class CosmeticFiltersCommunicationImpl final
    // cf_comm::mojom::CosmeticFiltersCommunication
    void HiddenClassIdSelectors(const std::string& input) override;
 
- private:
-   std::unique_ptr<base::ListValue> GetHiddenClassIdSelectorsOnTaskRunner(
-       const std::vector<std::string>& classes,
-       const std::vector<std::string>& ids);
-   void GetHiddenClassIdSelectorsOnUI(
-       std::unique_ptr<base::ListValue> selectors);
+   void SetObserver(CosmeticFiltersObserver* cosmetic_filters_observer);
 
+ private:
    content::RenderFrameHost* render_frame_host_;
    CosmeticFiltersObserver* cosmetic_filters_observer_;
 };

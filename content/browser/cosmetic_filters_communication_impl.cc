@@ -6,20 +6,23 @@
 #include "brave/content/browser/cosmetic_filters_communication_impl.h"
 
 #include "base/json/json_reader.h"
-//#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/content/browser/cosmetic_filters_observer.h"
 #include "content/public/browser/render_frame_host.h"
 
 namespace content {
 
 // static
-void CosmeticFiltersCommunicationImpl::GetInstance(
+void CosmeticFiltersCommunicationImpl::CreateInstance(
     content::RenderFrameHost* render_frame_host,
     CosmeticFiltersObserver* cosmetic_filters_observer) {
-  CosmeticFiltersCommunicationImpl(render_frame_host, cosmetic_filters_observer);
+  if (!render_frame_host->cosmetic_filters_communication_impl_) {
+    render_frame_host->cosmetic_filters_communication_impl_.reset(
+        new CosmeticFiltersCommunicationImpl(
+            render_frame_host, cosmetic_filters_observer));
+  } else {
+    render_frame_host->cosmetic_filters_communication_impl_->SetObserver(
+        cosmetic_filters_observer);
+  }
 }
 
 CosmeticFiltersCommunicationImpl::CosmeticFiltersCommunicationImpl(
@@ -27,58 +30,17 @@ CosmeticFiltersCommunicationImpl::CosmeticFiltersCommunicationImpl(
     CosmeticFiltersObserver* cosmetic_filters_observer)
     : render_frame_host_(render_frame_host),
     cosmetic_filters_observer_(cosmetic_filters_observer) {
-  if (cosmetic_filters_observer_) {
-    cosmetic_filters_observer_->HiddenClassIdSelectors();
-  }
 }
 
 CosmeticFiltersCommunicationImpl::~CosmeticFiltersCommunicationImpl() {
 }
 
-std::unique_ptr<base::ListValue>
-    CosmeticFiltersCommunicationImpl::GetHiddenClassIdSelectorsOnTaskRunner(
-        const std::vector<std::string>& classes,
-        const std::vector<std::string>& ids) {
-  // base::Optional<base::Value> hide_selectors = g_brave_browser_process->
-  //     ad_block_service()->HiddenClassIdSelectors(classes, ids,
-  //     	  render_frame_host_->cf_exceptions);
-
-  // base::Optional<base::Value> regional_selectors = g_brave_browser_process->
-  //     ad_block_regional_service_manager()->
-  //         HiddenClassIdSelectors(classes, ids,
-  //         	  render_frame_host_->cf_exceptions);
-
-  // base::Optional<base::Value> custom_selectors = g_brave_browser_process->
-  //     ad_block_custom_filters_service()->
-  //         HiddenClassIdSelectors(classes, ids,
-  //         	  render_frame_host_->cf_exceptions);
-
-  // if (hide_selectors && hide_selectors->is_list()) {
-  //   if (regional_selectors && regional_selectors->is_list()) {
-  //     for (auto i = regional_selectors->GetList().begin();
-  //         i < regional_selectors->GetList().end(); i++) {
-  //       hide_selectors->Append(std::move(*i));
-  //     }
-  //   }
-  // } else {
-  //   hide_selectors = std::move(regional_selectors);
-  // }
-
-  auto result_list = std::make_unique<base::ListValue>();
-  // if (hide_selectors && hide_selectors->is_list()) {
-  //   result_list->Append(std::move(*hide_selectors));
-  // }
-  // if (custom_selectors && custom_selectors->is_list()) {
-  //   result_list->Append(std::move(*custom_selectors));
-  // }
-
-  return result_list;
- }
- 
- void CosmeticFiltersCommunicationImpl::GetHiddenClassIdSelectorsOnUI(
-  	 std::unique_ptr<base::ListValue> selectors) {
-
- }
+void CosmeticFiltersCommunicationImpl::SetObserver(
+    CosmeticFiltersObserver* cosmetic_filters_observer) {
+  if (cosmetic_filters_observer && !cosmetic_filters_observer_) {
+    cosmetic_filters_observer_ = cosmetic_filters_observer;
+  }
+}
 
 void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
 	  const std::string& input) {
@@ -95,6 +57,9 @@ void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
   base::ListValue* classes_list;
   if (input_dict->GetList("classes", &classes_list)) {
     for (size_t i = 0; i < classes_list->GetSize(); i++) {
+      if (!classes_list->GetList()[i].is_string()) {
+        continue;
+      }
       classes.push_back(classes_list->GetList()[i].GetString());
     }
   }
@@ -102,35 +67,16 @@ void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
   base::ListValue* ids_list;
   if (input_dict->GetList("ids", &ids_list)) {
     for (size_t i = 0; i < ids_list->GetSize(); i++) {
+      if (!ids_list->GetList()[i].is_string()) {
+        continue;
+      }
       ids.push_back(ids_list->GetList()[i].GetString());
     }
   }
-
-  // g_brave_browser_process->ad_block_service()->GetTaskRunner()->
-  //     PostTaskAndReplyWithResult(FROM_HERE,
-  //         base::BindOnce(&CosmeticFiltersCommunicationImpl::
-  //           GetHiddenClassIdSelectorsOnTaskRunner, base::Unretained(this),
-  //           classes, ids),
-  //         base::BindOnce(&CosmeticFiltersCommunicationImpl::
-  //           GetHiddenClassIdSelectorsOnUI, base::Unretained(this)));
-
-
-
-
-  // for (size_t i = 0; i < render_frame_host_->cf_exceptions.size(); i++) {
-  //   LOG(ERROR) << "!!!exception == " << render_frame_host_->cf_exceptions[i];
-  // }
-
-  // if (render_frame_host_->enabled_1st_party_cf_filtering) {
-  //   // TODO
-  //   // resources.force_hide_selectors.push(...resources.hide_selectors)
-  //   force_hide_selectors_list = hide_selectors_list;
-  // } else {
-  // }
-
-  // std::string cosmeticFilterConsiderNewSelectors_script =
-  //         "(function() {"
-  //           "let nextIndex = window.cosmeticStyleSheet.rules.length;";
+  if (cosmetic_filters_observer_) {
+    cosmetic_filters_observer_->HiddenClassIdSelectors(render_frame_host_,
+        classes, ids);
+  }
 }
 
 }  // namespace content
