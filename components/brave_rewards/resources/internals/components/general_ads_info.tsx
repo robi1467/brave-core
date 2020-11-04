@@ -30,6 +30,9 @@ export class GeneralAdsInfo extends React.Component<Props, {}> {
         <div>
           {this.props.data.adsInfo.locale}
         </div>
+        <div>
+          {this.props.data.adsInfo.enabled.toString()}
+        </div>
       </>
     )
   }

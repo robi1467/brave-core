@@ -12,6 +12,7 @@ declare namespace RewardsInternals {
     }
     adsInfo: {
       locale: string
+      enabled: boolean
     }
     contributions: ContributionInfo[]
     promotions: Promotion[]

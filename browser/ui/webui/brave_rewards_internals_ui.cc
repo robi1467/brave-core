@@ -157,6 +157,7 @@ void RewardsInternalsDOMHandler::OnGetAdsInternalsInfo(
 
   base::DictionaryValue info_dict;
   info_dict.SetString("locale", info->locale);
+  info_dict.SetBoolean("enabled", info->enabled);
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.onGetAdsInternalsInfo", info_dict);
 }

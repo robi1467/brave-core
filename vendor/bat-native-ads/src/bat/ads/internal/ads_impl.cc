@@ -1493,6 +1493,7 @@ void AdsImpl::GetInternalsInfo(
     ads::InternalsInfoCallback callback) {
   auto info = InternalsInfo::New();
   info->locale = locale;
+  info->enabled = IsInitialized();
   callback(std::move(info));
 }
 
